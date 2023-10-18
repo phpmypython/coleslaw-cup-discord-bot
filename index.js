@@ -18,8 +18,8 @@ bot.on('message', msg => {
     messageReactionsMap.set(msgId, {
       messageId: msgId,
       proposal: msg.content.match(/proposal\s(\d+)/i)[0],
-      checkMarkCount: 4,
-      crossCount: 4,
+      checkMarkCount: 0,
+      crossCount: 0,
       halted: false
     });
     console.log(`New message monitored: ${msgId}`);
