@@ -12,18 +12,22 @@ bot.on('ready', () => {
 const channelId = process.env.CHANNEL_ID // Replace with the desired channel ID
 
 bot.on('message', msg => {
+  //strip special characters from the message
   if (msg.author.bot) return; // Ignore messages from the bot itself
-  if (msg.channel.id === channelId && msg.content.match(/^proposal\s(\d+)/i)) {
-
+  if (msg.channel.id === channelId ) {
+    const cleanMessage = msg.content.replace(/[^a-zA-Z0-9\s]/g, '');
+    if(!cleanMessage.match(/^proposal\s(\d+)/i)) return; // Ignore messages that don't match the pattern
     const msgId = msg.id;
     messageReactionsMap.set(msgId, {
       messageId: msgId,
-      proposal: msg.content.match(/^proposal\s(\d+)/i)[0],
+      proposal: cleanMessage.match(/^proposal\s(\d+)/i)[0],
       checkMarkCount: 0,
       crossCount: 0,
       halted: false
     });
     console.log(`New message monitored: ${msgId}`);
+    //log the proposal number in the console
+    console.log(cleanMessage.match(/^proposal\s(\d+)/i)[0]);
     //Add a green check mark and red x reaction to the message.
     msg.react('✅');
     msg.react('❌');
@@ -48,7 +52,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
         reactions.crossCount++;
         reactionName = 'cross mark';
         count = reactions.crossCount;
-        message = `With the following owners voting against: **${proposal} fails:**`;
+        message = `With the following owners voting against: **${proposal} fails:** `;
       }
       
       console.log(`A ${reactionName} reaction has been added to message: ${reaction.message.id}`);
