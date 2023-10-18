@@ -13,11 +13,12 @@ const channelId = process.env.CHANNEL_ID // Replace with the desired channel ID
 
 bot.on('message', msg => {
   if (msg.author.bot) return; // Ignore messages from the bot itself
-  if (msg.channel.id === channelId) {
+  if (msg.channel.id === channelId && msg.content.match(/^proposal\s(\d+)/i)) {
+
     const msgId = msg.id;
     messageReactionsMap.set(msgId, {
       messageId: msgId,
-      proposal: msg.content.match(/proposal\s(\d+)/i)[0],
+      proposal: msg.content.match(/^proposal\s(\d+)/i)[0],
       checkMarkCount: 0,
       crossCount: 0,
       halted: false
@@ -56,6 +57,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
         console.log(`Message: ${reaction.message.id} has crossed the reaction threshold with ${count} ${reactionName} reactions`);
         const channel = reaction.message.channel;
         const users = reaction.users.cache.filter(u => !u.bot).map(u => u.username);
+
         await channel.send(message + users.join(', '));
         reactions.halted = true;
       }
