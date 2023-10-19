@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const messageReactionsMap = new Map();
 const reactionThreshold = 5;
-
+const express = require('express')
 require('dotenv').config();
 
 bot.on('ready', () => {
@@ -77,3 +77,12 @@ bot.on('message', msg => {
 
 bot.login(process.env.BOT_TOKEN);
 
+
+const app = express();
+const port = 3000;
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
