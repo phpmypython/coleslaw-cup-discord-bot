@@ -1,3 +1,4 @@
+
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const messageReactionsMap = new Map();
@@ -7,6 +8,18 @@ require('dotenv').config();
 
 bot.on('ready', () => {
   console.log(`Bot has logged in as ${bot.user.tag}`);
+  bot.user.setPresence({
+    status: 'online',
+    activity: {
+        name: 'Goonin',
+        type: 4,
+        state: "😩 Now a Gooner",
+        emoji: {
+          name: ":hot_face:"
+        }
+    }
+});
+  // bot.user.setActivity('Certified Gooner', { type: 'CUSTOM',state:"🥵",name:"custom" });
 });
 
 const channelId = process.env.CHANNEL_ID // Replace with the desired channel ID
